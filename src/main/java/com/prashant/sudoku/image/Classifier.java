@@ -1,4 +1,4 @@
-package com.prashant.sudoku.image
+package com.prashant.sudoku.image;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

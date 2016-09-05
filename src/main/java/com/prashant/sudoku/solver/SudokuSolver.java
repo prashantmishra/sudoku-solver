@@ -1,10 +1,11 @@
 package com.prashant.sudoku.solver;
 
+import com.prashant.sudoku.image.ImageManipulator;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
-import org.slf4j.Logger;
 /**
  * Created by prashant on 3/7/16.
  */

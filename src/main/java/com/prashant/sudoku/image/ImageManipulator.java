@@ -1,7 +1,7 @@
 package com.prashant.sudoku.image;
 
+import com.prashant.sudoku.solver.Sudoku;
 import org.opencv.core.*;
-import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
