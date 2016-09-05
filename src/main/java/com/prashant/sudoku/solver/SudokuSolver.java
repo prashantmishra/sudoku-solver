@@ -1,3 +1,5 @@
+package com.prashant.sudoku.solver;
+
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;

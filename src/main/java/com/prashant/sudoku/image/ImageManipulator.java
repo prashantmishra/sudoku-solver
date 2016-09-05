@@ -1,3 +1,5 @@
+package com.prashant.sudoku.image;
+
 import org.opencv.core.*;
 import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
