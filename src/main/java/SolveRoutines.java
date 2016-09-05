@@ -15,9 +15,12 @@ import java.util.HashMap;
 public class SolveRoutines {
 
     private static Logger logger = LoggerFactory.getLogger(SolveRoutines.class);
-    private static String divider = "|---------|---------|---------|---------|---------|---------|---------|---------|---------|";
+    private static final String divider = "|---------|---------|---------|---------|---------|---------|---------|---------|---------|";
 
 
+    /**
+     * Takes a text file and returns a grid containing all the possible values it can contain after applying the constraints
+     */
     public static HashMap<String, String> parsetxt(String filename) throws IOException {
         File file = new File(filename);
         FileReader fr = new FileReader(file);
@@ -60,6 +63,39 @@ public class SolveRoutines {
 
     }
 
+    /**
+     * Takes a Sudoku object and returns a grid containing all the possible values it can contain after applying the constraints
+     */
+    public static HashMap<String, String> loadSudoku(Sudoku sudoku) throws IOException {
+
+        int[][] _data = sudoku.getData();
+
+        HashMap<String, String> values = new HashMap<>();
+
+        int cell = 0;
+        logger.debug("Setting all cell values to \"123456789\"");
+        for (String s : SolveHelper.cells) {
+            values.put(s, "123456789");
+        }
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j <9; j++) {
+                cell++;
+                if (_data[i][j] != 0) {
+                    logger.debug("Assign value {} to cell {}. Index is {}", _data[i][j], SolveHelper.cells.get(cell-1), (cell-1));
+                    if (logger.isDebugEnabled()) SolveRoutines.display_values(values);
+                    if (!assign(values, SolveHelper.cells.get(cell-1), String.valueOf(_data[i][j]))) return null;
+                }
+            }
+        }
+        return values;
+    }
+
+
+    /**
+     * Takes a grid, value and cell; tries to assign that value to the cell. <br>
+     * If not possible, returns false. If possible, removes all other possible values from that cell using put_constraint method
+     */
     public static boolean assign(HashMap<String, String> values, String cell, String value) {
         logger.debug("Assigning value {} to cell [{}]", value, cell);
         if (logger.isDebugEnabled()) SolveRoutines.display_values(values);
@@ -72,6 +108,11 @@ public class SolveRoutines {
         return true;
     }
 
+    /**
+     * Takes a grid, value and cell; tries to remove that value from the cell. <br>
+     * If not possible, returns false. If possible and it's the only remaining value, removes the value from all its peers
+     * Check if this value is a possible value in atleast one of the cells in each corresponding units
+     */
     private static boolean put_constraint(HashMap<String, String> values, String cell, String value) {
         logger.debug("Removing value {} from cell [{}]", value, cell);
         if (logger.isDebugEnabled()) SolveRoutines.display_values(values);
@@ -110,44 +151,9 @@ public class SolveRoutines {
         return true;
     }
 
-    public static void display_values(HashMap<String, String> values) {
-        if (values==null) {
-            logger.info("Received null : Nothing to display..");
-            return;
-        }
-        StringBuilder sb = new StringBuilder("Current state of possible values :\n").append(divider).append("\n|");
-        int i = 0;
-        for (String cell : SolveHelper.cells) {
-            if (i%9==0 && i!=0) sb.append("\n").append(divider).append("\n|");
-            i++;
-            sb.append(values.get(cell)==null? "   NaN   |" : String.format("%1$9s|", StringUtils.center(values.get(cell), 9)));
-        }
-        sb.append("\n").append(divider);
-        logger.info(sb.toString());
-    }
-
-    public static void display_grid(String filename) throws IOException{
-        File file = new File(filename);
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
-        StringBuilder sb = new StringBuilder("Grid to solve (").append(filename).append(") :\n").append(divider);
-
-        String line = br.readLine();
-
-        while (line!=null) {
-            sb.append("\n|");
-            for (char c : line.replace(" ","").toCharArray()) {
-                sb.append(String.format("%1$9s|", StringUtils.center(c!='0'? String.valueOf(c) : "", 9)));
-            }
-            sb.append("\n").append(divider);
-            line = br.readLine();
-        }
-        br.close();
-        fr.close();
-        logger.info(sb.toString());
-    }
-
-
+    /**
+     * Find a cell with minimum number of possible values, try each sequentially and see if it leads to a solution
+     */
     public static HashMap<String, String> search(HashMap<String, String> values) {
         logger.debug("Solving puzzle further..");
         if (logger.isDebugEnabled()) SolveRoutines.display_values(values);
@@ -177,5 +183,67 @@ public class SolveRoutines {
         }
         return null;
     }
+
+    /**
+     * Take a grid and display it as a 9x9 matrix
+     */
+    public static void display_values(HashMap<String, String> values) {
+        if (values==null) {
+            logger.info("Sorry, looks like this puzzle can not be solved..");
+            return;
+        }
+        StringBuilder sb = new StringBuilder("Current state of possible values :\n").append(divider).append("\n|");
+        int i = 0;
+        for (String cell : SolveHelper.cells) {
+            if (i%9==0 && i!=0) sb.append("\n").append(divider).append("\n|");
+            i++;
+            sb.append(values.get(cell)==null? "   NaN   |" : String.format("%1$9s|", StringUtils.center(values.get(cell), 9)));
+        }
+        sb.append("\n").append(divider);
+        logger.info(sb.toString());
+    }
+
+    /**
+     * Read a grid from file and display it as a 9x9 matrix
+     */
+    public static void display_grid(String filename) throws IOException{
+        File file = new File(filename);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        StringBuilder sb = new StringBuilder("Grid to solve (").append(filename).append(") :\n").append(divider);
+
+        String line = br.readLine();
+
+        while (line!=null) {
+            sb.append("\n|");
+            for (char c : line.replace(" ","").toCharArray()) {
+                sb.append(String.format("%1$9s|", StringUtils.center(c!='0'? String.valueOf(c) : "", 9)));
+            }
+            sb.append("\n").append(divider);
+            line = br.readLine();
+        }
+        br.close();
+        fr.close();
+        logger.info(sb.toString());
+    }
+
+    /**
+     * Read a grid from Sudoku object and display it as a 9x9 matrix
+     */
+    public static void display_grid_from_object(Sudoku s) throws IOException{
+
+        StringBuilder sb = new StringBuilder("Grid to solve :\n").append(divider);
+        int[][] data = s.getData();
+
+        for (int i = 0; i < 9; i++) {
+            sb.append("\n|");
+            for (int j = 0; j < 9; j++) {
+                sb.append(String.format("%1$9s|", StringUtils.center(data[i][j]!=0? String.valueOf(data[i][j]) : "", 9)));
+            }
+            sb.append("\n").append(divider);
+        }
+        logger.info(sb.toString());
+    }
+
 
 }

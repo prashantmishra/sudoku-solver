@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * Class to generate a few useful objects for solving sudoku. <br>
+ * Class to generate a few useful objects for solving the Sudoku puzzle. <br>
  * @author Prashant Mishra
  */
 public class SolveHelper {
@@ -13,7 +13,9 @@ public class SolveHelper {
     protected static HashMap<String, ArrayList<ArrayList<String>> > corrUnits = makeCorrUnits(cells, units);
     protected static HashMap<String, ArrayList<String>> peers = makePeers(corrUnits);
 
-    // Returns a list of 81 cells
+    /**
+     * Returns a list of 81 cells
+     */
     static ArrayList<String> makeCells (ArrayList<String> rows, ArrayList<String> cols) {
         ArrayList<String> cells = new ArrayList<>();
         for (String s1 : rows) {
@@ -24,7 +26,9 @@ public class SolveHelper {
         return cells;
     }
 
-    // Returns a list of 27 units : 9 rows, 9 columns, 9 square boxes
+    /**
+     * Returns a list of 27 units : 9 rows, 9 columns, 9 square boxes
+     */
     private static ArrayList<ArrayList<String>> makeUnits(ArrayList<String> rows, ArrayList<String> cols) {
         ArrayList<ArrayList<String>> units = new ArrayList<ArrayList<String>>();
 
@@ -66,7 +70,9 @@ public class SolveHelper {
 
     }
 
-    // Returns corresponding 3 units. Ex for C2 : Returns the row, column and the square it belongs to
+    /**
+     * Returns corresponding 3 units (row, column and 3x3 cell) for a cell
+     */
     private static HashMap<String, ArrayList<ArrayList<String>> > makeCorrUnits(ArrayList<String> cells, ArrayList<ArrayList<String>> units) {
         HashMap<String, ArrayList<ArrayList<String>> > corrUnits = new HashMap<>();
         for (String cell : cells) {
@@ -81,7 +87,9 @@ public class SolveHelper {
         return  corrUnits;
     }
 
-    // Returns the other 20 cells in the corresponding units
+    /**
+     * Returns the other 20 cells (peers) in the corresponding units
+     */
     private static HashMap<String,ArrayList<String>> makePeers(HashMap<String, ArrayList<ArrayList<String>>> corrUnits) {
         HashMap<String, ArrayList<String>> peers = new HashMap<>();
         for (String cell : corrUnits.keySet()) {
