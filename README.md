@@ -16,25 +16,19 @@ Run using a text file as input : ```mvn exec:java -Dexec.args="1 {location of te
 
 ###Image
 
-Let's use this image as our input :
+This chart gives an overview of how we process the image before extracting the digits from a sudoku puzzle :
 
-![img1](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/img.png)
+![img1](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/d2.png)
 
-We load and convert it to a binary image using adaptive-thresholding :
+1) We use this image as our input.
 
-![img2](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/ImgMAT-1.png)
+2) We load and convert it to a binary image using adaptive-thresholding.
 
-Then we find the largest connected area, assume it is our box,and fill out the rest :
+3) Then we find the largest connected area, assume it is our box,and fill out the rest.
 
-![img3](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/ImgMAT-2.png)
+4) After finding the edges, putting back the white pixels inside them which are our numbers and warping the image to make it a square.
 
-After finding the edges, putting back the white pixels inside them which are our numbers and warping the image to make it a square :
-
-![img4](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/ImgMAT-3.png)
-
-For better processing though, we fill out the grid before we warp the image to a square, finally getting :
-
-![img5](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/ImgMAT-4.png)
+5) For better processing though, we fill out the grid before we warp the image to a square, finally getting this image.
 
 We divide this into 9x9 squares, extract the digits, compare them to our training set and find the nearest match (<a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">k-NN</a> with k=1) and finally solve the puzzle! The console output for the above image :
 
