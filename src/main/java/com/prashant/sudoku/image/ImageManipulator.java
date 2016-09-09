@@ -2,7 +2,7 @@ package com.prashant.sudoku.image;
 
 import com.prashant.sudoku.solver.Sudoku;
 import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,7 @@ import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 
+import static org.opencv.core.Core.line;
 import static org.opencv.core.CvType.CV_8UC1;
 import static org.opencv.imgproc.Imgproc.*;
 
@@ -20,6 +21,11 @@ import static org.opencv.imgproc.Imgproc.*;
  * Created by prashant on 28/8/16.
  */
 public class ImageManipulator {
+
+    static {
+        nu.pattern.OpenCV.loadShared();
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
 
     static Logger log = LoggerFactory.getLogger(ImageManipulator.class);
 
@@ -31,8 +37,6 @@ public class ImageManipulator {
         Sudoku _sudoku = null;
 
         try {
-
-            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
             Mat m = loadAndPreprocess(filename);
             Mat backup = m.clone();
@@ -131,7 +135,7 @@ public class ImageManipulator {
      * Takes a file, loads it, applies adaptive thresholding, inverts the color and returns the Mat image
      */
     private static Mat loadAndPreprocess(String file) {
-        Mat s = Imgcodecs.imread(file, 0);
+        Mat s = Highgui.imread(file, 0);
         Mat outerBox = new Mat(s.size(), CV_8UC1);
 
         int blockSize = (int) (s.size().height * 0.05d);

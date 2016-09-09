@@ -11,11 +11,17 @@ import java.util.HashMap;
  */
 public class SudokuSolver {
 
+    private static final String IMAGE = "0";
+    private static final String TEXT = "1";
+
     private static Logger logger = LoggerFactory.getLogger(SudokuSolver.class);
 
     public static void main(String[] args) {
-//        solveTxt("src/main/resources/puzz.txt");
-        solveImage("resources/img-1.png");
+
+        if (IMAGE.equals(args[0])) solveImage(args[1]);
+        else if (TEXT.equals(args[0])) solveTxt(args[1]);
+        else logger.info("Invalid first argument : Please use 0 (Image) or 1 (Text)..");
+
     }
 
     /**

@@ -2,7 +2,7 @@ package com.prashant.sudoku.image;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.highgui.Highgui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +15,11 @@ import java.util.Map;
  */
 public class Classifier {
 
+    static {
+        nu.pattern.OpenCV.loadShared();
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
+
     static Logger log = LoggerFactory.getLogger(Classifier.class);
 
     private static Map<Integer, int[][]> data;
@@ -24,13 +29,13 @@ public class Classifier {
      * Load the training data for nearest neighbor comparision
      */
     private static void loadData() throws Exception {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
         data = new HashMap<>();
 
         data.put(0, new int[25][25]);
         for (int i = 1; i <= 9; i++) {
             for (int j = 1; j <= 4; j++) {
-                Mat s = Imgcodecs.imread("resources/training_data/" + i + "_" + j + ".png", 0);
+                Mat s = Highgui.imread("resources/training_data/" + i + "_" + j + ".png", 0);
                 if (s.size().height!=25 || s.size().width!=25) throw new Exception("Need a 25x25 image for training..");
                 int[][] _data = new int[25][25];
                 for (int x = 0; x < 25; x++) {
