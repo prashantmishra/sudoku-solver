@@ -20,17 +20,19 @@ This chart gives an overview of how we process the image before extracting the d
 
 ![img1](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/d2.png)
 
-1) We use this image as our input.
+**(I)** We use this image as our input.
 
-2) We load and convert it to a binary image using adaptive-thresholding.
+**(II)** We load and convert it to a binary image using adaptive-thresholding.
 
-3) Then we find the largest connected area, assume it is our box,and fill out the rest.
+**(III)** Then we find the largest connected area, assume it is our box,and fill out the rest.
 
-4) After finding the edges, putting back the white pixels inside them which are our numbers and warping the image to make it a square.
+**(IV)** After finding the edges, putting back the white pixels inside them which are our numbers and warping the image to make it a square.
 
-5) For better processing though, we fill out the grid before we warp the image to a square, finally getting this image.
+**(V)** For better processing though, we fill out the grid before we warp the image to a square, getting this as our final image.
 
-We divide this into 9x9 squares, extract the digits, compare them to our training set and find the nearest match (<a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">k-NN</a> with k=1) and finally solve the puzzle! The console output for the above image :
+<br>
+
+We divide the final image into 9x9 squares, extract the digits, compare them to our training set and find the nearest match (<a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">k-NN</a> with k=1) and finally solve the puzzle! The console output for the above image :
 
 ![solution](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/solution.png)
 
