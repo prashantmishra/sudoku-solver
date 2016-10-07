@@ -2,7 +2,9 @@
 
 Hello there!
 
-This is a JAVA implementation of the method discussed in <a href="http://norvig.com/sudoku.html">this article by Peter Norvig</a> which uses constraint-propogation and backtracking for solving any Sudoku puzzle. The input can be in the form of an image or a text file.
+This is a Sudoku solver which, given an image, is also capable of reading the puzzle through a simple image classifier. The method used to solve the puzzle is discussed in <a href="http://norvig.com/sudoku.html">this article by Peter Norvig</a> which uses constraint-propogation and backtracking. The input to the solver can be in the form of an image or a text file. 
+
+Example inputs can be found below.
 
 ##Installating and running
 
