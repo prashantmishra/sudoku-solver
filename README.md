@@ -1,4 +1,4 @@
-#Sudoku Solver
+# Sudoku Solver
 
 Hello there!
 
@@ -6,15 +6,15 @@ This is a Sudoku solver which, given an image, is also capable of reading the pu
 
 Example inputs can be found below.
 
-##Installating and running
+## Installating and running
 
 - Maven install : ```mvn install```
 - Run using an image as input : ```mvn exec:java -Dexec.args="0 {location of image file}"```
 - Run using a text file as input : ```mvn exec:java -Dexec.args="1 {location of text file}"```
 
-##Example runs
+## Example runs
 
-###Image
+### Image
 
 This chart gives an overview of how we process the image before extracting the digits from a sudoku puzzle :
 
@@ -29,7 +29,7 @@ We divide the final image into 9x9 squares, extract the digits, compare them to 
 
 ![solution](https://raw.githubusercontent.com/prashantmishra/Sudoku/master/src/main/resources/solution.png)
 
-###Text
+### Text
 
 The same puzzle could have been denoted by the text file :
 
